@@ -1,0 +1,41 @@
+{% extends 'base.html' %} 
+{% block content %}
+
+    {% for message in get_flashed_messages() %}
+        {% if 'success' in message|lower %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+        {% if 'already' in message|lower %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    <div class="my-5">
+        <div class="p-5 text-center bg-body-tertiary">
+            <div class="container py-5">
+                <h1 class="text-body-emphasis">{{ blog.title }}</h1>
+                <strong class="d-inline-block mb-2 text-success-emphasis">By: {{ blog.author }}</strong>
+                <br/>
+                <br/>
+                <br/>
+                <p class="col-lg-8 mx-auto lead" style="text-align: justify">{{ blog.content }}</p>
+            </div>
+        </div>
+    </div>
+    <div style="width: 150px">
+        <a href="{{ url_for('blogs')}}" class="btn btn-primary btn-sm">← Back</a>
+    </div>
+    <br/>
+    <div style="width: 150px; display: inline-block">
+        <a href="{{ url_for('editBlog', id=blog.id)}}" class="btn btn-secondary btn-sm">Edit ✒</a>
+    </div>
+    <br />
+    <br />
+
+{% endblock %}

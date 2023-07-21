@@ -81,8 +81,8 @@ def register():
 
 @app.route('/blogs')
 def blogs():
-    posts = Blogs.query.order_by(Blogs.datePosted)
-    return render_template("blogs.html", posts = posts)
+    blogs = Blogs.query.order_by(Blogs.datePosted)
+    return render_template("blogs.html", blogs=blogs)
 
 @app.route('/addBlog', methods=['GET', 'POST'])
 def addBlogs():
@@ -92,21 +92,40 @@ def addBlogs():
         content = form.content.data
         author = form.author.data
         slug = form.slug.data
-        post = Blogs(title=title, content=form.content.data, author=author, slug=slug)
+        blog = Blogs(title=title, content=form.content.data, author=author, slug=slug)
         form.title.data = ''
         form.content.data = ''
         form.author.data = ''
         form.slug.data = ''
-        db.session.add(post)
+        db.session.add(blog)
         db.session.commit()
         flash("Blog Post Success")
     return render_template('addBlog.html', form=form)
 
 
 @app.route('/blog/<int:id>')
-def blog():
-    pass
+def viewBlog(id):
+    blog = Blogs.query.get_or_404(id)
+    return render_template('viewBlog.html', blog=blog)
 
-@app.route('/editBlog/<int:id>')
-def editBlog():
-    pass
+@app.route('/blog/edit/<int:id>', methods=['GET', 'POST'])
+def editBlog(id):
+    blog_to_update = Blogs.query.get_or_404(id)
+    form = BlogForm()
+    if form.validate_on_submit():
+        blog_to_update.title = form.title.data
+        blog_to_update.author = form.author.data
+        blog_to_update.slug = form.slug.data
+        blog_to_update.content = form.content.data
+
+        db.session.add(blog_to_update)
+        db.session.commit()
+        flash("Blog Updated Successfully")
+        return redirect(url_for('viewBlog', id=blog_to_update.id))
+
+    form.title.data = blog_to_update.title
+    form.author.data = blog_to_update.author
+    form.slug.data = blog_to_update.slug
+    form.content.data = blog_to_update.content
+    return render_template("editBlog.html", form=form, id=id)
+    
