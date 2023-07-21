@@ -203,11 +203,14 @@ def editBlog(id):
         db.session.commit()
         flash("Blog Updated Successfully")
         return redirect(url_for('viewBlog', id=blog_to_update.id))
-
-    form.title.data = blog_to_update.title
-    form.slug.data = blog_to_update.slug
-    form.content.data = blog_to_update.content
-    return render_template("editBlog.html", form=form, id=id, blog=blog)
+    if current_user.id == blog.authorId.id:
+        form.title.data = blog_to_update.title
+        form.slug.data = blog_to_update.slug
+        form.content.data = blog_to_update.content
+        return render_template("editBlog.html", form=form, id=id, blog=blog)
+    else:
+        flash("You can't edit this post")
+        return redirect(url_for('viewBlog', id=blog.id))
     
 @app.route('/blog/delete/<int:id>', methods=['GET', 'POST'])
 @login_required
