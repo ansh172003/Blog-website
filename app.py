@@ -193,6 +193,7 @@ def viewBlog(id):
 def editBlog(id):
     blog_to_update = Blogs.query.get_or_404(id)
     form = BlogForm()
+    blog = Blogs.query.get_or_404(id)
     if form.validate_on_submit():
         blog_to_update.title = form.title.data
         blog_to_update.slug = form.slug.data
@@ -206,18 +207,24 @@ def editBlog(id):
     form.title.data = blog_to_update.title
     form.slug.data = blog_to_update.slug
     form.content.data = blog_to_update.content
-    return render_template("editBlog.html", form=form, id=id)
+    return render_template("editBlog.html", form=form, id=id, blog=blog)
     
 @app.route('/blog/delete/<int:id>', methods=['GET', 'POST'])
 @login_required
 def deleteBlog(id):
     form = BlogForm()
     blog = Blogs.query.get_or_404(id)
-    try:
-        db.session.delete(blog)
-        db.session.commit()
-        flash("Blog deleted successfully")
-        return redirect(url_for('blogs'))
-    except:
-        flash("Error Deleting Blog!")        
-        return redirect(url_for('blogs'))
+    id = current_user.id
+    if id == blog.authorId.id:
+        try:
+            db.session.delete(blog)
+            db.session.commit()
+            flash("Blog deleted successfully")
+            return redirect(url_for('blogs'))
+        except:
+            flash("Error Deleting Blog!")        
+            return redirect(url_for('blogs'))
+    else:
+            flash("You can't delete this blog post")
+            return redirect(url_for('blogs'))
+

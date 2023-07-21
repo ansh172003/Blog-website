@@ -41,12 +41,14 @@
     </div>
     <br/>
     <br/>
-    <div style="width: 150px">
+    <div style="width: 150px; display: inline-block;">
         <a href="{{ url_for('blogs')}}" class="btn btn-primary btn-sm">← Back</a>
       </div>
-      <br/>
-      <div style="width: 150px; display: inline-block;">
-        <a href="{{ url_for('deleteBlog', id=id)}}" class="btn btn-danger btn-sm"> Delete 🗑️</a>
-    </div>
-      </div>
+      {% if current_user.id == blog.author_id %}
+            <div style="width: 150px; display: inline-block;">
+                <a href="{{ url_for('deleteBlog', id=blog.id)}}" class="btn btn-danger btn-sm">
+                    Delete 🗑️
+                </a>
+            </div>
+        {% endif %}
 {% endblock %}

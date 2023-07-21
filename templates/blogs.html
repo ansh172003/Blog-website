@@ -44,16 +44,18 @@
                 Read More →
             </a>
         </div>
-        <div style="width: 150px; display: inline-block;">
-            <a href="{{ url_for('editBlog', id=blog.id)}}" class="btn btn-secondary btn-sm">
-                Edit ✒
-            </a>
-        </div>
-        <div style="width: 150px; display: inline-block;">
-            <a href="{{ url_for('deleteBlog', id=blog.id)}}" class="btn btn-danger btn-sm">
-                Delete 🗑️
-            </a>
-        </div>
+        {% if current_user.id == blog.author_id %}
+            <div style="width: 150px; display: inline-block;">
+                <a href="{{ url_for('editBlog', id=blog.id)}}" class="btn btn-secondary btn-sm">
+                    Edit ✒
+                </a>
+            </div>
+            <div style="width: 150px; display: inline-block;">
+                <a href="{{ url_for('deleteBlog', id=blog.id)}}" class="btn btn-danger btn-sm">
+                    Delete 🗑️
+                </a>
+            </div>
+        {% endif %}
     </div>
     
     {% endfor %}
