@@ -8,12 +8,15 @@
       <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
         <li><a href="{{ url_for('index') }}" class="nav-link px-2 text-black">Home</a></li>
         <li><a href="{{ url_for('blogs') }}" class="nav-link px-2 text-black">Blogs</a></li>
-        <li><a href="{{ url_for('addBlogs') }}" class="nav-link px-2 text-black">Add Blogs</a></li>
+        {% if current_user.is_authenticated %}
+          <li><a href="{{ url_for('addBlogs') }}" class="nav-link px-2 text-black">Add Blogs</a></li>
+        {% endif %}
         <li><a href="#" class="nav-link px-2 text-black">About</a></li>
       </ul>
 
       <div class="text-end">
         {% if current_user.is_authenticated %}
+          <a href="{{ url_for('dashboard') }}" class="btn btn-outline-dark me-2">DashBoard</a>
           <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
         {% else %}
           <a href="{{ url_for('login') }}" class="btn btn-outline-dark me-2">Login</a>

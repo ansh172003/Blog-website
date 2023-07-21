@@ -32,10 +32,10 @@
         <h3 class="mb-0">{{ blog.title }}</h3>
         <strong class="d-inline-block mb-2 text-success-emphasis">By: {{ blog.author }}</strong>
         <div class="mb-1 text-body-secondary">{{ blog.datePosted }}</div>
-        {% if blog.content|length>200 %}
-            <p class="mb-auto">{{ blog.content[:200] }}...</p>
+        {% if blog.content|length>150 %}
+            <p class="mb-auto" style="max-width: 1200px; word-wrap: break-word;">{{ blog.content[:150] }}...</p>
         {% else %}
-            <p class="mb-auto">{{ blog.content}}.</p>
+            <p class="mb-auto" style="max-width: 400px; word-wrap: break-word;">{{ blog.content}}.</p>
         {% endif %}
         <br/>
         <br/>

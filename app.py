@@ -130,6 +130,7 @@ def blogs():
     return render_template("blogs.html", blogs=blogs)
 
 @app.route('/addBlog', methods=['GET', 'POST'])
+@login_required
 def addBlogs():
     form = BlogForm()
     if form.validate_on_submit():
