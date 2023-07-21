@@ -129,3 +129,15 @@ def editBlog(id):
     form.content.data = blog_to_update.content
     return render_template("editBlog.html", form=form, id=id)
     
+@app.route('/blog/delete/<int:id>', methods=['GET', 'POST'])
+def deleteBlog(id):
+    form = BlogForm()
+    blog = Blogs.query.get_or_404(id)
+    try:
+        db.session.delete(blog)
+        db.session.commit()
+        flash("BLog deleted successfully")
+        return redirect(url_for('blogs'))
+    except:
+        flash("Error Deleting Blog!")        
+        return redirect(url_for('blogs'))

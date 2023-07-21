@@ -17,7 +17,7 @@
         {% endif %}
     {% endfor %}
 
-    <h1> Add Blog Post...</h1>
+    <h1> Edit Blog...</h1>
     <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
         <form method="POST">
             {{ form.hidden_tag() }}
@@ -42,7 +42,7 @@
       </div>
       <br/>
       <div style="width: 150px; display: inline-block;">
-        <a href="#" class="btn btn-danger btn-sm">
+        <a href="{{ url_for('deleteBlog', id=id)}}" class="btn btn-danger btn-sm">
             Delete 🗑️
         </a>
     </div>
