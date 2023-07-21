@@ -18,3 +18,8 @@ class BlogForm(FlaskForm):
     author = StringField("Author", validators=[DataRequired()])
     slug = StringField("Slug", validators=[DataRequired()])
     submit = SubmitField("Submit", validators=[DataRequired()])
+
+class LoginForm(FlaskForm):
+    username = StringField("Enter your username", validators=[DataRequired()])
+    password = PasswordField("Password", validators=[DataRequired()])
+    submit = SubmitField("Submit")

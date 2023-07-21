@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
     <br/>
     {% for message in get_flashed_messages() %}
         {% if 'success' in message|lower %}
@@ -24,29 +23,20 @@
 
     <br/>
     <br/>
-
-    <h1> Add Blog Post...</h1>
+    <h1> Login </h1>
+    <br/>
     <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
         <form method="POST">
             {{ form.hidden_tag() }}
-            {{ form.title.label(class="form-label") }}
-            {{ form.title(class="form-control") }}
-            {{ form.author.label(class="form-label") }}
-            {{ form.author(class="form-control") }}
-            {{ form.slug.label(class="form-label") }}
-            {{ form.slug(class="form-control") }}
-            {{ form.content.label(class="form-label") }}
-            {{ form.content(class="form-control", rows='5') }}
+            {{ form.username.label(class="form-label") }}
+            {{ form.username(class="form-control") }}
+            {{ form.password.label(class="form-label") }}
+            {{ form.password(class="form-control") }}
             <br/>
             {{ form.submit(class="btn btn-primary") }}
         </form>
     </div>
     <br/>
     <br/>
-    <div style="width: 150px">
-        <a href="{{ url_for('blogs')}}" class="btn btn-primary btn-sm">← Back</a>
-    </div>
 
-    <br/>
-    <br/>
 {% endblock %}
