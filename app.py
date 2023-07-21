@@ -113,7 +113,25 @@ def login():
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
-    return render_template('userDashboard.html') 
+    form = UserForm()
+    id = current_user.id
+    user_to_update = Users.query.get_or_404(id)
+    if request.method == 'POST':
+        email = request.form['email']
+        user = Users.query.filter_by(email=email).first()
+        if user is None or user_to_update.email == email:
+            user_to_update.name = request.form['name']
+            user_to_update.username = request.form['username']
+            user_to_update.email = request.form['email']
+            db.session.commit()
+            flash("User updated Successfully")
+            return render_template('userDashboard.html', form=form, name_to_update=user_to_update, id=id)
+        else:
+            flash("User Email Already Exists!!!!")
+            return render_template('userDashboard.html', form=form, name_to_update=user_to_update, id=id)
+    else:
+        return render_template('userDashboard.html', form=form, name_to_update=user_to_update, id=id)
+ 
 
 @app.route('/logout', methods=['GET', 'POST'])
 @login_required
@@ -156,6 +174,7 @@ def viewBlog(id):
     return render_template('viewBlog.html', blog=blog)
 
 @app.route('/blog/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
 def editBlog(id):
     blog_to_update = Blogs.query.get_or_404(id)
     form = BlogForm()
@@ -177,6 +196,7 @@ def editBlog(id):
     return render_template("editBlog.html", form=form, id=id)
     
 @app.route('/blog/delete/<int:id>', methods=['GET', 'POST'])
+@login_required
 def deleteBlog(id):
     form = BlogForm()
     blog = Blogs.query.get_or_404(id)
