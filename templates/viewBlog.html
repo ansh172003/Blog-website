@@ -27,12 +27,11 @@
     <div class="my-5">
         <div class="p-5 text-center bg-body-tertiary">
             <div class="container py-5">
-                <h1 class="text-body-emphasis">{{ blog.title }}</h1>
-                <strong class="d-inline-block mb-2 text-success-emphasis">By: {{ blog.author }}</strong>
+                <h1 class="text-body-emphasis">{{ blog.title|title }}</h1>
+                <strong class="d-inline-block mb-2 text-success-emphasis">By: {{ blog.authorId.name }}</strong>
                 <br/>
                 <br/>
-                <br/>
-                <p class="col-lg-8 mx-auto lead" style="text-align: justify max-width: 1000px; word-wrap: break-word;">{{ blog.content }}</p>
+                <p class="col-lg-8 mx-auto lead" style="text-align: justify; max-width: 1000px;">{{ blog.content }}</p>
             </div>
         </div>
     </div>

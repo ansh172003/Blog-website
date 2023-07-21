@@ -29,10 +29,9 @@ class Blogs(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     title = db.Column(db.String(255))
     content = db.Column(db.Text)
-    author = db.Column(db.String(255))
     datePosted = db.Column(db.DateTime, default=datetime.now)
     slug = db.Column(db.String(255))
-
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
 class Users(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key = True)
@@ -41,6 +40,7 @@ class Users(db.Model, UserMixin):
     email = db.Column(db.String(100), nullable = False, unique = True)
     dateAdded = db.Column(db.DateTime, default=datetime.now)
     password_hash = db.Column(db.String(128))
+    blogs_written = db.relationship('Blogs', backref = 'authorId')
 
     @property
     def password(self):
@@ -125,14 +125,30 @@ def dashboard():
             user_to_update.email = request.form['email']
             db.session.commit()
             flash("User updated Successfully")
-            return render_template('userDashboard.html', form=form, name_to_update=user_to_update, id=id)
+            return render_template('userDashboard.html', form=form)
         else:
             flash("User Email Already Exists!!!!")
-            return render_template('userDashboard.html', form=form, name_to_update=user_to_update, id=id)
+            return render_template('userDashboard.html', form=form)
     else:
-        return render_template('userDashboard.html', form=form, name_to_update=user_to_update, id=id)
+        return render_template('userDashboard.html', form=form)
+    
+@app.route('/delete/<int:id>', methods=['GET', 'POST'])
+@login_required
+def deleteUser(id):
+    if id == current_user.id:
+        user_to_delete = Users.query.get_or_404(id)
+        try:
+            db.session.delete(user_to_delete)
+            db.session.commit()
+            flash("User deleted successfully")
+            return redirect('/login')
+        except:
+            flash("Error Deleting User!")
+            return redirect('/dashboard')
+    else:
+        flash("You can't delete other user profile")
+        return redirect('/dashboard')
  
-
 @app.route('/logout', methods=['GET', 'POST'])
 @login_required
 def logout():
@@ -152,14 +168,13 @@ def blogs():
 def addBlogs():
     form = BlogForm()
     if form.validate_on_submit():
+        author = current_user.id
         title = form.title.data
         content = form.content.data
-        author = form.author.data
         slug = form.slug.data
-        blog = Blogs(title=title, content=form.content.data, author=author, slug=slug)
+        blog = Blogs(title=title, content=form.content.data, slug=slug, author_id=author)
         form.title.data = ''
         form.content.data = ''
-        form.author.data = ''
         form.slug.data = ''
         db.session.add(blog)
         db.session.commit()
@@ -180,7 +195,6 @@ def editBlog(id):
     form = BlogForm()
     if form.validate_on_submit():
         blog_to_update.title = form.title.data
-        blog_to_update.author = form.author.data
         blog_to_update.slug = form.slug.data
         blog_to_update.content = form.content.data
 
@@ -190,7 +204,6 @@ def editBlog(id):
         return redirect(url_for('viewBlog', id=blog_to_update.id))
 
     form.title.data = blog_to_update.title
-    form.author.data = blog_to_update.author
     form.slug.data = blog_to_update.slug
     form.content.data = blog_to_update.content
     return render_template("editBlog.html", form=form, id=id)
@@ -203,7 +216,7 @@ def deleteBlog(id):
     try:
         db.session.delete(blog)
         db.session.commit()
-        flash("BLog deleted successfully")
+        flash("Blog deleted successfully")
         return redirect(url_for('blogs'))
     except:
         flash("Error Deleting Blog!")        

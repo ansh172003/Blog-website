@@ -52,7 +52,7 @@
                 {{ form.username(class="form-control", value=current_user.username) }}
                <br/>
                 {{ form.submit(class="btn btn-primary") }}
-                <a href="#" class="btn btn-danger">Delete</a>
+                <a href="{{ url_for('deleteUser', id=current_user.id)}}" class="btn btn-danger">Delete</a>
             </form>
         </div>
         <br/>
