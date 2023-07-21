@@ -33,9 +33,9 @@
         <strong class="d-inline-block mb-2 text-success-emphasis">By: {{ blog.authorId.name }}</strong>
         <div class="mb-1 text-body-secondary">{{ blog.datePosted }}</div>
         {% if blog.content|length>150 %}
-            <p class="mb-auto" style="max-width: 1200px; word-wrap: break-word;">{{ blog.content[:150] }}...</p>
+            <p class="mb-auto" style="max-width: 1200px; word-wrap: break-word;">{{ blog.content[:150]|safe }}...</p>
         {% else %}
-            <p class="mb-auto" style="max-width: 400px; word-wrap: break-word;">{{ blog.content}}.</p>
+            <p class="mb-auto" style="max-width: 400px; word-wrap: break-word;">{{ blog.content|safe }}.</p>
         {% endif %}
         <br/>
         <br/>

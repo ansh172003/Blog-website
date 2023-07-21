@@ -2,6 +2,7 @@
 
 {% block content %}
 
+    {{ ckeditor.load() }}
     <br/>
     {% for message in get_flashed_messages() %}
         {% if 'success' in message|lower %}
@@ -38,6 +39,8 @@
             <br/>
             {{ form.submit(class="btn btn-primary") }}
         </form>
+        {{ ckeditor.load() }}
+        {{ ckeditor.config(name='content') }}
     </div>
     <br/>
     <br/>

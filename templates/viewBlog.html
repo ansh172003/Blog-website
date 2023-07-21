@@ -31,7 +31,7 @@
                 <strong class="d-inline-block mb-2 text-success-emphasis">By: {{ blog.authorId.name }}</strong>
                 <br/>
                 <br/>
-                <p class="col-lg-8 mx-auto lead" style="text-align: justify; max-width: 1000px;">{{ blog.content }}</p>
+                <p class="col-lg-8 mx-auto lead" style="text-align: justify; max-width: 1000px;">{{ blog.content|safe }}</p>
             </div>
         </div>
     </div>

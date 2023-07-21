@@ -6,7 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from webForms import *
 from flask_login import UserMixin
 from flask_login import UserMixin, login_user,LoginManager, login_required, logout_user, current_user 
-
+from flask_ckeditor import CKEditor
 
 #App and DBMS Configs
 app = Flask(__name__)
@@ -14,6 +14,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:tiger@localhost/blog_website'
 app.config['SECRET_KEY'] = 'passKey'
 
+ckeditor = CKEditor(app) 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
