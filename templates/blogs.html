@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% for message in get_flashed_messages() %}
+        {% if 'success' in message|lower %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+        {% if 'already' in message|lower %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    <br/>
+    <br/>
+    <h1>Blog Posts... </h1>
+    <br/>
+    <br/>
+    {% for post in posts %}
+    <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
+        <h3 class="mb-0">{{ post.title }}</h3>
+        <strong class="d-inline-block mb-2 text-success-emphasis">By: {{ post.author }}</strong>
+        <div class="mb-1 text-body-secondary">{{ post.datePosted }}</div>
+        {% if post.content|length>200 %}
+            <p class="mb-auto">{{ post.content[:200] }}...</p>
+        {% else %}
+            <p class="mb-auto">{{ post.content}}.</p>
+        {% endif %}
+        <br/>
+        <br/>
+        <div style="width: 150px; display: inline-block;">
+            <a href="#" class="btn btn-primary btn-sm">
+                Read More →
+            </a>
+        </div>
+        <div style="width: 150px; display: inline-block;">
+            <a href="#" class="btn btn-secondary btn-sm">
+                Edit ✒
+            </a>
+        </div>
+        <div style="width: 150px; display: inline-block;">
+            <a href="#" class="btn btn-danger btn-sm">
+                Delete 🗑️
+            </a>
+        </div>
+    </div>
+    
+    {% endfor %}
+
+
+    
+{% endblock %}

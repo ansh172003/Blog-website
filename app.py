@@ -17,6 +17,16 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 
+
+class Blogs(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    title = db.Column(db.String(255))
+    content = db.Column(db.Text)
+    author = db.Column(db.String(255))
+    datePosted = db.Column(db.DateTime, default=datetime.now)
+    slug = db.Column(db.String(255))
+
+
 class Users(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key = True)
     username = db.Column(db.String(100), nullable = False, unique=True)
@@ -47,12 +57,12 @@ def index():
 def register():
     name = None
     email = None
-    form = AddUserForm()
+    form = UserForm()
     if form.validate_on_submit():
         name = form.name.data
         email = form.email.data
         username = form.username.data
-        password_hash = form.password_hash.data
+        password_hash = form.password.data
         password_hash = generate_password_hash(password_hash, "sha256")
         emailS = Users.query.filter_by(email=email).first()
         userS = Users.query.filter_by( username=username).first()
@@ -65,6 +75,38 @@ def register():
             flash("User already exists")
         form.name.data = ''
         form.email.data = ''
-        form.password_hash.data = ''
+        form.password.data = ''
         form.username.data = ''
     return render_template('userRegister.html', form=form)
+
+@app.route('/blogs')
+def blogs():
+    posts = Blogs.query.order_by(Blogs.datePosted)
+    return render_template("blogs.html", posts = posts)
+
+@app.route('/addBlog', methods=['GET', 'POST'])
+def addBlogs():
+    form = BlogForm()
+    if form.validate_on_submit():
+        title = form.title.data
+        content = form.content.data
+        author = form.author.data
+        slug = form.slug.data
+        post = Blogs(title=title, content=form.content.data, author=author, slug=slug)
+        form.title.data = ''
+        form.content.data = ''
+        form.author.data = ''
+        form.slug.data = ''
+        db.session.add(post)
+        db.session.commit()
+        flash("Blog Post Success")
+    return render_template('addBlog.html', form=form)
+
+
+@app.route('/blog/<int:id>')
+def blog():
+    pass
+
+@app.route('/editBlog/<int:id>')
+def editBlog():
+    pass
