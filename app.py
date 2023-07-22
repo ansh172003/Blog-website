@@ -14,7 +14,8 @@ import os
 #App and DBMS Configs
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:tiger@localhost/blogWebsite'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:tiger@localhost/blogWebsite'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
 app.config['SECRET_KEY'] = 'passKey'
 UPLOAD_FOLDER = 'static/userImg'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
