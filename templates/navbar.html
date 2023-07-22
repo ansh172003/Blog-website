@@ -11,7 +11,7 @@
         {% if current_user.is_authenticated %}
           <li><a href="{{ url_for('addBlogs') }}" class="nav-link px-2 text-black">Add Blogs</a></li>
         {% endif %}
-        <li><a href="#" class="nav-link px-2 text-black">About</a></li>
+        <li><a href="{{ url_for('about') }}" class="nav-link px-2 text-black">About</a></li>
       </ul>
 
       <div class="text-end">

@@ -1,0 +1,32 @@
+{% extends 'base.html' %} 
+{% block content %} 
+<br/>
+
+<div class="container col-xxl-8 px-4 py-5">
+  <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+    <div class="col-10 col-sm-8 col-lg-6">
+    <img src="{{ url_for('static', filename='finalLogo.png') }}" alt="Your Logo" width="150" height="150">
+    </div>
+    <div class="col-lg-6">
+      <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">Welcome to Creative Quill</h1><br/>
+      <p class="lead">
+      At Creative Quill, we celebrate the art of expression through the written word. We are a community of writers, artists, and dreamers united by a shared passion for creativity. Our platform serves as a sanctuary for exploring the magic of language and unlocking the full potential of imagination.
+      <br/>Join us on this journey of self-discovery, inspiration, and connection. Let your words take flight as we embrace the beauty of storytelling together.
+      <br/>
+      <strong>Happy writing!</strong>
+      <br/>
+      <i>The Creative Quill Team</i>
+      </p>
+      <div class="d-grid gap-2 d-md-flex justify-content-md-start"> 
+        <a href="{{ url_for('blogs') }}" class="btn btn-primary btn-lg px-4 gap-3">Read Blogs</a>
+        {% if current_user.is_authenticated %}
+            <a href="{{ url_for('logout') }}" class="btn btn-danger btn-lg px-4 gap-3">Logout</a>
+        {% else %}
+            <a href="{{ url_for('register') }}" class="btn btn-warning btn-lg px-4 gap-3">Sign Up</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

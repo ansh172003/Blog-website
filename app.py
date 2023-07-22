@@ -73,6 +73,10 @@ def load_user(user_id):
 def index():
     return render_template('index.html')
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
 
 #User Register-> Login-> Dashboard-> Logout
 @app.route('/register', methods=['GET', 'POST'])
