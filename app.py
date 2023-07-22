@@ -1,5 +1,6 @@
-from flask import Flask, render_template, flash, request, redirect, url_for
+from flask import Flask, render_template, flash, request, redirect, url_for, send_file
 from flask_sqlalchemy import SQLAlchemy
+from bson import ObjectId
 from flask_migrate import Migrate
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -8,13 +9,22 @@ from flask_login import UserMixin
 from flask_login import UserMixin, login_user,LoginManager, login_required, logout_user, current_user 
 from flask_ckeditor import CKEditor
 from werkzeug.utils import secure_filename
+from pymongo import MongoClient
+from gridfs import GridFS
 import uuid
+import io
 import os
 
 #App and DBMS Configs
 app = Flask(__name__)
+# CDN Config
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
+client = MongoClient('mongodb+srv://ansh172003:0T7wJQW4s4Vxue5D@creativequill.qyey59p.mongodb.net/?retryWrites=true&w=majority')
+db = client.testdb
+fs = GridFS(db)
+
+# app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:tiger@localhost/blogWebsite'
 # app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
 app.config['SECRET_KEY'] = 'passKey'
 UPLOAD_FOLDER = 'static/userImg'
@@ -68,6 +78,16 @@ class Users(db.Model, UserMixin):
 @login_manager.user_loader
 def load_user(user_id):
     return Users.query.get(int(user_id))
+
+@app.route('/image/<file_id>')
+def serve_image(file_id):
+    try:
+        # file_id = ObjectId(file_id) 
+        image_data = fs.find_one({'filename':file_id})
+        return send_file(io.BytesIO(image_data.read()), mimetype="image/jpeg")
+    except Exception as e:
+        print("Image not found", e)
+        return f"Image not found: {e}", 404
 
 #Home Page
 @app.route('/')
@@ -129,6 +149,7 @@ def login():
 @login_required
 def dashboard():
     form = UserForm()
+    file_id=None
     id = current_user.id
     user_to_update = Users.query.get_or_404(id)
     if request.method == 'POST':
@@ -144,7 +165,8 @@ def dashboard():
                 filename = secure_filename(user_to_update.profile_pic.filename)
                 filename = str(uuid.uuid1()) + "_" + filename
                 filename = filename[-49:]
-                user_to_update.profile_pic.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                file_id = fs.put(user_to_update.profile_pic, filename=filename)
+                print(str(file_id), type(file_id))
                 user_to_update.profile_pic = filename
                 db.session.commit()
                 flash("User updated Successfully")

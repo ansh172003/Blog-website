@@ -35,16 +35,15 @@
                         @{{ current_user.username }}
                         <span class="mx-2"> | </span>
                         {{ current_user.email }}
-                        {% set path = 'userImg/' ~ current_user.profile_pic %}
                     </p>
                     <p class="small mb-0">Joined <strong>Creative Quill</strong> on {{ current_user.dateAdded }}</p>
                 </div>
             </div>
             <div class="col-md-4 d-flex justify-content-center align-items-center">
-                {% if current_user.profile_pic== None %}
+                {% if current_user.profile_pic==None %}
                     <img src="{{ url_for('static', filename='profile.png') }}" width='150' alt="User Image" class="img-fluid" >
                 {% else %}
-                    <img src="{{ url_for('static', filename=path) }}" width="150" height='150' alt="User Image" class="rounded-circle">
+                    <img src="{{ url_for('serve_image', file_id=current_user.profile_pic) }}" width="150" height="150" alt="User Image" class="rounded-circle">
                 {% endif %}
             </div>
         </div>
@@ -71,7 +70,8 @@
                 <textarea name = 'about_author' class = 'form-control'>{{ current_user.about_author }}</textarea>
 
                 {{ form.profile_pic.label(class="form-label") }}
-                {{ form.profile_pic(class="form-control", value=current_user.profile_pic) }}
+                <!---{{ form.profile_pic(class="form-control", value=current_user.profile_pic) }}-->
+                <input type="file" id="{{ form.profile_pic.id }}" name="{{ form.profile_pic.name }}" class="form-control" accept=".jpg, .jpeg">
 
                 <br/>
                 {{ form.submit(class="btn btn-primary") }}
