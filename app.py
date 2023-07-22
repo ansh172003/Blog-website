@@ -129,7 +129,6 @@ def login():
 def dashboard():
     form = UserForm()
     id = current_user.id
-    print(current_user.about_author)
     user_to_update = Users.query.get_or_404(id)
     if request.method == 'POST':
         email = request.form['email']
