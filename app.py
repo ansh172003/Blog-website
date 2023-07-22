@@ -7,12 +7,17 @@ from webForms import *
 from flask_login import UserMixin
 from flask_login import UserMixin, login_user,LoginManager, login_required, logout_user, current_user 
 from flask_ckeditor import CKEditor
+from werkzeug.utils import secure_filename
+import uuid
+import os
 
 #App and DBMS Configs
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:tiger@localhost/blogWebsite'
 app.config['SECRET_KEY'] = 'passKey'
+UPLOAD_FOLDER = 'static/userImg'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 ckeditor = CKEditor(app) 
 db = SQLAlchemy(app)
@@ -130,6 +135,12 @@ def dashboard():
             user_to_update.username = request.form['username']
             user_to_update.email = request.form['email']
             user_to_update.about_author = request.form['about_author']
+            user_to_update.profile_pic = request.files['profile_pic']
+            filename = secure_filename(user_to_update.profile_pic.filename)
+            filename = str(uuid.uuid1()) + "_" + filename
+            filename = filename[-49:]
+            user_to_update.profile_pic.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            user_to_update.profile_pic = filename
             db.session.commit()
             flash("User updated Successfully")
             return render_template('userDashboard.html', form=form)

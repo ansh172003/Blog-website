@@ -35,12 +35,19 @@
                         @{{ current_user.username }}
                         <span class="mx-2"> | </span>
                         {{ current_user.email }}
+                        <span class="mx-2"> | </span>
+                        {% set path = 'userImg/' ~ current_user.profile_pic %}
+                        {{ path }}
                     </p>
                     <p class="small mb-0">Joined <strong>Creative Quill</strong> on {{ current_user.dateAdded }}</p>
                 </div>
             </div>
             <div class="col-md-4 d-flex justify-content-center align-items-center">
-                <img src="{{ url_for('static', filename='profile.png') }}" width="150" alt="User Image" class="img-fluid rounded-circle">
+                {% if current_user.profile_pic== None %}
+                    <img src="{{ url_for('static', filename='profile.png') }}" width='150' alt="User Image" class="img-fluid" >
+                {% else %}
+                    <img src="{{ url_for('static', filename=path) }}" width="150" height='150' alt="User Image" class="rounded-circle">
+                {% endif %}
             </div>
         </div>
     </div>
@@ -50,7 +57,7 @@
         <div class="shadow p-3 bg-body-primary card mb-0"style="border-radius: 30px;">
             <h1>Update your profile</h1>
             <hr class="my-2">
-            <form action="/dashboard" method="POST">
+            <form action="/dashboard" method="POST" enctype="multipart/form-data">
                 {{ form.hidden_tag() }}
 
                 {{ form.name.label(class="form-label") }}
