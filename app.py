@@ -23,8 +23,8 @@ client = MongoClient('mongodb+srv://ansh172003:0T7wJQW4s4Vxue5D@creativequill.qy
 db = client.testdb
 fs = GridFS(db)
 
-# app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:tiger@localhost/blogWebsite'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:tiger@localhost/blogWebsite'
 # app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
 app.config['SECRET_KEY'] = 'passKey'
 UPLOAD_FOLDER = 'static/userImg'
