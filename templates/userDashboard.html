@@ -35,9 +35,7 @@
                         @{{ current_user.username }}
                         <span class="mx-2"> | </span>
                         {{ current_user.email }}
-                        <span class="mx-2"> | </span>
                         {% set path = 'userImg/' ~ current_user.profile_pic %}
-                        {{ path }}
                     </p>
                     <p class="small mb-0">Joined <strong>Creative Quill</strong> on {{ current_user.dateAdded }}</p>
                 </div>
