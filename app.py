@@ -39,6 +39,7 @@ class Users(db.Model, UserMixin):
     username = db.Column(db.String(100), nullable = False, unique=True)
     name = db.Column(db.String(100), nullable = False)
     email = db.Column(db.String(100), nullable = False, unique = True)
+    about_author = db.Column(db.Text(500), nullable = True)
     dateAdded = db.Column(db.DateTime, default=datetime.now)
     password_hash = db.Column(db.String(128))
     blogs_written = db.relationship('Blogs', backref = 'authorId')
@@ -77,12 +78,13 @@ def register():
         name = form.name.data
         email = form.email.data
         username = form.username.data
+        about_author = form.about_author.data
         password_hash = form.password.data
         password_hash = generate_password_hash(password_hash, "sha256")
         emailS = Users.query.filter_by(email=email).first()
         userS = Users.query.filter_by( username=username).first()
         if emailS is None and userS is None:
-            user = Users(name=name, email=email, password_hash=password_hash, username=username)
+            user = Users(name=name, email=email, about_author=about_author, password_hash=password_hash, username=username)
             db.session.add(user)
             db.session.commit()
             flash("Successfully Registered")
@@ -93,6 +95,7 @@ def register():
         form.email.data = ''
         form.password.data = ''
         form.username.data = ''
+        form.about_author.data = ''
     return render_template('userRegister.html', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -116,6 +119,7 @@ def login():
 def dashboard():
     form = UserForm()
     id = current_user.id
+    print(current_user.about_author)
     user_to_update = Users.query.get_or_404(id)
     if request.method == 'POST':
         email = request.form['email']
@@ -124,6 +128,7 @@ def dashboard():
             user_to_update.name = request.form['name']
             user_to_update.username = request.form['username']
             user_to_update.email = request.form['email']
+            user_to_update.about_author = request.form['about_author']
             db.session.commit()
             flash("User updated Successfully")
             return render_template('userDashboard.html', form=form)

@@ -68,13 +68,19 @@
             <hr class="my-2">
             <form action="/dashboard" method="POST">
                 {{ form.hidden_tag() }}
+
                 {{ form.name.label(class="form-label") }}
                 {{ form.name(class="form-control", value=current_user.name) }}
+                
                 {{ form.email.label(class="form-label") }}
                 {{ form.email(class="form-control", value=current_user.email) }}
+                
                 {{ form.username.label(class="form-label") }}
                 {{ form.username(class="form-control", value=current_user.username) }}
-               <br/>
+                
+                {{ form.about_author.label(class="form-label") }}
+                <textarea name = 'about_author' class = 'form-control'>{{ current_user.about_author }}</textarea>
+                <br/>
                 {{ form.submit(class="btn btn-primary") }}
                 <a href="{{ url_for('deleteUser', id=current_user.id)}}" class="btn btn-danger">Delete</a>
             </form>
