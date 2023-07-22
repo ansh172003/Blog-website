@@ -22,22 +22,6 @@
     {% endfor %}
     <br/>
     <br/>
-    <!--<div class="shadow p-3 mb-3 bg-body-primary card mb-0" style="border-radius: 30px;">
-        <h1>About your profile</h1>
-        <hr class="my-2">
-        <div class="card-body p-2">
-            <h3 class="mb-0">{{ current_user.name }}
-            </h3>
-            <p class="small mb-0">
-                <i class="fas fa-star fa-lg text-warning"></i> 
-                <span class="mx-2">|</span>
-                @{{ current_user.username }}
-                <span class="mx-2"> | </span>
-                {{ current_user.email }}
-            </p>
-            <p class="small mb-0"> Joined <strong>Creative Quill</strong> on {{ current_user.dateAdded }}</p>
-        </div>
-    </div>-->
     <div class="shadow p-3 mb-3 bg-body-primary card mb-0" style="border-radius: 30px;">
         <div class="row">
             <div class="col-md-8">
@@ -80,6 +64,10 @@
                 
                 {{ form.about_author.label(class="form-label") }}
                 <textarea name = 'about_author' class = 'form-control'>{{ current_user.about_author }}</textarea>
+
+                {{ form.profile_pic.label(class="form-label") }}
+                {{ form.profile_pic(class="form-control", value=current_user.profile_pic) }}
+
                 <br/>
                 {{ form.submit(class="btn btn-primary") }}
                 <a href="{{ url_for('deleteUser', id=current_user.id)}}" class="btn btn-danger">Delete</a>

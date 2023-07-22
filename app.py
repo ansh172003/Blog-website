@@ -11,7 +11,7 @@ from flask_ckeditor import CKEditor
 #App and DBMS Configs
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:tiger@localhost/blog_website'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:tiger@localhost/blogWebsite'
 app.config['SECRET_KEY'] = 'passKey'
 
 ckeditor = CKEditor(app) 
@@ -39,6 +39,7 @@ class Users(db.Model, UserMixin):
     username = db.Column(db.String(100), nullable = False, unique=True)
     name = db.Column(db.String(100), nullable = False)
     email = db.Column(db.String(100), nullable = False, unique = True)
+    profile_pic = db.Column(db.String(50), nullable = True)
     about_author = db.Column(db.Text(500), nullable = True)
     dateAdded = db.Column(db.DateTime, default=datetime.now)
     password_hash = db.Column(db.String(128))
