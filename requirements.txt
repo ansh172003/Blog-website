@@ -1,3 +1,4 @@
+pip==23.2.1
 alembic==1.11.1
 blinker==1.6.2
 cffi==1.15.1
