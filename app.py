@@ -139,15 +139,20 @@ def dashboard():
             user_to_update.username = request.form['username']
             user_to_update.email = request.form['email']
             user_to_update.about_author = request.form['about_author']
-            user_to_update.profile_pic = request.files['profile_pic']
-            filename = secure_filename(user_to_update.profile_pic.filename)
-            filename = str(uuid.uuid1()) + "_" + filename
-            filename = filename[-49:]
-            user_to_update.profile_pic.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            user_to_update.profile_pic = filename
-            db.session.commit()
-            flash("User updated Successfully")
-            return render_template('userDashboard.html', form=form)
+            if request.files['profile_pic']:
+                user_to_update.profile_pic = request.files['profile_pic']
+                filename = secure_filename(user_to_update.profile_pic.filename)
+                filename = str(uuid.uuid1()) + "_" + filename
+                filename = filename[-49:]
+                user_to_update.profile_pic.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                user_to_update.profile_pic = filename
+                db.session.commit()
+                flash("User updated Successfully")
+                return render_template('userDashboard.html', form=form)
+            else:
+                db.session.commit()
+                flash("User updated Successfully")
+                return render_template('userDashboard.html', form=form)
         else:
             flash("User Email Already Exists!!!!")
             return render_template('userDashboard.html', form=form)
