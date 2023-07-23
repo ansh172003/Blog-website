@@ -18,7 +18,7 @@ Creative Quill comes with the following features:
 
 1. **User Registration and Login**: Users can sign up with their credentials and securely log in to their accounts.
 
-2. **User Dashboard**: After logging in, users are welcomed to their personalized dashboard where they can manage their blogs, view statistics, and perform account-related actions.
+2. **User Dashboard**: After logging in, users are welcomed to their personalized dashboard where thet can perform account-related actions.
 
 3. **Write and Read Blogs**: Authenticated users can create new blog posts and publish them for others to read.
 
