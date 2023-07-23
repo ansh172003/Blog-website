@@ -58,7 +58,4 @@ To run Creative Quill locally on your machine, follow these steps:
     ```
 4. Set up the necessary configuration files for MongoDB Atlas, Postgresql, and MySQL.
 
-## License
-
-Creative Quill is released under the [MIT License](https://opensource.org/licenses/MIT). Feel free to use, modify, and distribute the code as per the terms of the license.
 
